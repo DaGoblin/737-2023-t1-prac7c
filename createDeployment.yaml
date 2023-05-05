@@ -20,4 +20,4 @@ spec:
                 - name: calculator-ms
                   image: s222574652/kube_calculator_ms:latest
                   ports:
-                      - containerPort: 8080
+                      - containerPort: 4000
