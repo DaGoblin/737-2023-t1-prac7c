@@ -3,6 +3,6 @@ set -ex
 # docker hub username
 USERNAME=s222574652
 # image name
-IMAGE=calculator_ms
+IMAGE=kube_calculator_ms
 docker build -t $USERNAME/$IMAGE:latest .
 

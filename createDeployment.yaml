@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: mydeployment
+    name: calculator-deployment
     labels:
-        app: myapp
+        app: calculator-ms
         tier: frontend
 spec:
     # modify replicas according to your case
@@ -18,6 +18,6 @@ spec:
         spec:
             containers:
                 - name: calculator-ms
-                  image: s222574652/calculator_ms:latest
+                  image: s222574652/kube_calculator_ms:latest
                   ports:
                       - containerPort: 8080

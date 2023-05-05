@@ -3,7 +3,7 @@ set -ex
 # docker hub username
 USERNAME=s222574652
 # image name
-IMAGE=calculator_ms
+IMAGE=kube_calculator_ms
 # ensure we're up to date
 git pull
 # bump version
