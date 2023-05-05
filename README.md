@@ -5,6 +5,41 @@
 https://github.com/DaGoblin/737-2023-t1-prac7c.git
 
 
+Calculator Deployment with replica sets see https://github.com/DaGoblin/737-2023-t1-prac7c/blob/main/createDeployment.yaml
+
+![kubernetes Dashboard Deployment Starting state](/doco/images/DashboardCalculatorDeploymentStart.png)
+
+## Setting up temporary port forwarding 
+As we don’t care which one of the replicaset pods we are connected to we use you the deployment as the target for port forwarding. Our calculator microservice is running on port 4000 inside the container we will forward it to our local port 3005 to access it in browser.
+Command: `kubectl port-forward deployment/calculator-deployment 3005:4000`
+
+![Image of CLI port forwarding](/doco/images/PortForwardCLI.png)
+
+![Image of browser port 3006 forwarding to container port 4000](/doco/images/PortForwardBrowser.png)
+
+## Updating our program and image
+There are a number of ways this can be achieved and some debate on correct methods, here we have created an automated build process to update and version our docker image but we will manually update the image in our deployment which will propagate to each replica. It would also be possible to update our deployment.ymal with imagePullPolicy: Always to force retrieval of the latest image. A valid modern method here would be to add this to our update script and/or use github actions to update the image push. 
+Inspiration from this article (Reeder, 2016)
+
+Release script: https://github.com/DaGoblin/737-2023-t1-prac7c/blob/main/CalculatorMS/release.sh
+
+Build script: https://github.com/DaGoblin/737-2023-t1-prac7c/blob/main/CalculatorMS/build.sh
+
+Update from version 1.0.0 to version 1.2.0
+
+### Docker hub updated tag version.
+
+![Docker Hub image showing new version](/doco/images/DockerhubUpdate.png)
+
+### Update deployment with new image
+
+Command: `kubectl set image deployment/calculator-deployment calculator-ms=s222574652/kube_calculator_ms:1.2.0`
+
+![CLI showing deployment updated to new image version](/doco/images/DeploymentUpdateCLI.png)
+
+### View updated deployment and new replica sets
+
+![CLI showing deployment has updated](/doco/images/DeploymentUpdateCLI2.png)
 
 
 
@@ -26,65 +61,3 @@ https://github.com/DaGoblin/737-2023-t1-prac7c.git
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Docker Image:
-
-s222574652/calculator_ms
-
-## DockerFile:
-
-https://github.com/DaGoblin/737-2023-t1-prac7.1p/blob/main/CalculatorMS/dockerfile
-
-## Kubernetes
-
-Kubernetes setup files in github repo main directory.
-
-Quick Video Showing interaction with Kubernetes Dashboard
-https://www.youtube.com/watch?v=ARSpVwl2bms
-
-### Setup Instructions
-
--   After Enabling Hyper-V (Windows) and enabling Kubernetes in Docker Desktop
--   Deploy Dashboard by running:
-    -   kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
-
-The following command have the corresponding yaml config file in the github main directory.
-
--   Create a new user using a user yaml config file
-    -   kubectl apply –f admin-user.yaml
--   Create user role
-    -   kubectl apply -f cluster_role_binding.yaml
--   Create Application POD
-    -   kubectl apply -f createPod.yaml
--   Create Replica set
-    -   kubectl apply -f createReplicaSet.yaml
--   Create Deployment
-    -   kubectl apply -f .\createDeployment.yaml
-
-### Login and view dashboard
-
--   Start the dashboard with:
-    -   kubectl proxy
--   Use this url to access the dashboard:
-    -   http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy
--   Retrieve bearer token with the following command:
-    -   kubectl -n kubernetes-dashboard create token admin-user
-
-![screenshot of login prompt](doco/images/Login.png)
-
--   Past the token to login
--   Dashboard will be displayed showing the pod running and three replicas.
-
-![Screenshot of the kubernetes dashboard](doco/images/Dashboard.png)
