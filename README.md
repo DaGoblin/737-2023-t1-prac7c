@@ -19,7 +19,7 @@ Command: `kubectl port-forward deployment/calculator-deployment 3005:4000`
 
 ## Updating our program and image
 There are a number of ways this can be achieved and some debate on correct methods, here we have created an automated build process to update and version our docker image but we will manually update the image in our deployment which will propagate to each replica. It would also be possible to update our deployment.ymal with imagePullPolicy: Always to force retrieval of the latest image. A valid modern method here would be to add this to our update script and/or use github actions to update the image push. 
-Inspiration from this article (Reeder, 2016)
+Inspiration from this article (Reeder, 2016)[^1].
 
 Release script: https://github.com/DaGoblin/737-2023-t1-prac7c/blob/main/CalculatorMS/release.sh
 
@@ -41,6 +41,12 @@ Command: `kubectl set image deployment/calculator-deployment calculator-ms=s2225
 
 ![CLI showing deployment has updated](/doco/images/DeploymentUpdateCLI2.png)
 
+### Updated Dashboard showing us running on v1.2.0
+![Updated Kubernetes Dashboard](/doco/images/DashboardCalculatorDeploymentUpdated.png)
+
+[^1]:REEDER, T. 2016. How to Version Your Docker Images. Available:   
+  https://betterprogramming.pub/how-to-version-your-docker-images-1d5c577ebf54  
+  [Accessed 05/05/2023].
 
 
 
